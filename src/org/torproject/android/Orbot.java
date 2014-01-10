@@ -56,17 +56,17 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 
-public class Orbot extends SherlockActivity implements TorConstants, OnLongClickListener, OnTouchListener, OnSharedPreferenceChangeListener
+public class Orbot extends SherlockActivity implements TorConstants, OnTouchListener, OnSharedPreferenceChangeListener
 {
 	/* Useful UI bits */
-	private TextView lblStatus = null; //the main text display widget
-	private ImageProgressView imgStatus = null; //the main touchable image for activating Orbot
+//	private TextView lblStatus = null; //the main text display widget
+//	private ImageProgressView imgStatus = null; //the main touchable image for activating Orbot
 //	private ProgressDialog progressDialog;
 	private MenuItem mItemOnOff = null;
-    private TextView downloadText = null;
-    private TextView uploadText = null;
-    private TextView mTxtOrbotLog = null;
-    private SlidingDrawer mDrawer = null;
+//    private TextView downloadText = null;
+//    private TextView uploadText = null;
+    //private TextView mTxtOrbotLog = null;
+    //private SlidingDrawer mDrawer = null;
     private boolean mDrawerOpen = false;
 
 	/* Some tracking bits */
@@ -99,54 +99,27 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
 	{
     	setContentView(R.layout.layout_main);
 		
-    	lblStatus = (TextView)findViewById(R.id.lblStatus);
-		lblStatus.setOnLongClickListener(this);
-    	imgStatus = (ImageProgressView)findViewById(R.id.imgStatus);
-    	imgStatus.setOnLongClickListener(this);
+//    	lblStatus = (TextView)findViewById(R.id.lblStatus);
+//		lblStatus.setOnLongClickListener(this);
+//    	imgStatus = (ImageProgressView)findViewById(R.id.imgStatus);
+//    	imgStatus.setOnLongClickListener(this);
     	
-    	imgStatus.setOnTouchListener(this);
+//    	imgStatus.setOnTouchListener(this);
     	
-    	downloadText = (TextView)findViewById(R.id.trafficDown);
-        uploadText = (TextView)findViewById(R.id.trafficUp);
-        mTxtOrbotLog = (TextView)findViewById(R.id.orbotLog);
+//    	downloadText = (TextView)findViewById(R.id.trafficDown);
+//        uploadText = (TextView)findViewById(R.id.trafficUp);
+    	
+//			@Override
+//			public boolean onLongClick(View v) {
+//				  ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+//	                cm.setText(mTxtOrbotLog.getText());
+//	                Toast.makeText(Orbot.this, "LOG COPIED TO CLIPBOARD", Toast.LENGTH_SHORT).show();
+//	            return true;
+//			}
+//        });
         
-        mDrawer = ((SlidingDrawer)findViewById(R.id.SlidingDrawer));
-    	Button slideButton = (Button)findViewById(R.id.slideButton);
-    	if (slideButton != null)
-    	{
-	    	slideButton.setOnTouchListener(new OnTouchListener (){
-	
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-	
-					if (event.equals(MotionEvent.ACTION_DOWN))
-					{
-						mDrawerOpen = !mDrawerOpen;
-						mTxtOrbotLog.setEnabled(mDrawerOpen);				
-					}
-					return false;
-				}
-	    		
-	    	});
-    	}
-    	
-    	ScrollingMovementMethod smm = new ScrollingMovementMethod();
-    	
-        mTxtOrbotLog.setMovementMethod(smm);
-        mTxtOrbotLog.setOnLongClickListener(new View.OnLongClickListener() {
-         
-
-			@Override
-			public boolean onLongClick(View v) {
-				  ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-	                cm.setText(mTxtOrbotLog.getText());
-	                Toast.makeText(Orbot.this, "LOG COPIED TO CLIPBOARD", Toast.LENGTH_SHORT).show();
-	            return true;
-			}
-        });
-        
-		downloadText.setText(formatCount(0) + " / " + formatTotal(0));
-		uploadText.setText(formatCount(0) + " / " + formatTotal(0));
+//		downloadText.setText(formatCount(0) + " / " + formatTotal(0));
+//		uploadText.setText(formatCount(0) + " / " + formatTotal(0));
 	
 		updateStatus("");
 		
@@ -165,19 +138,19 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
 
 	}
    	
-    private void appendLogTextAndScroll(String text)
-    {
-        if(mTxtOrbotLog != null){
-        	mTxtOrbotLog.append(text + "\n");
-            final Layout layout = mTxtOrbotLog.getLayout();
-            if(layout != null){
-                int scrollDelta = layout.getLineBottom(mTxtOrbotLog.getLineCount() - 1) 
-                    - mTxtOrbotLog.getScrollY() - mTxtOrbotLog.getHeight();
-                if(scrollDelta > 0)
-                	mTxtOrbotLog.scrollBy(0, scrollDelta);
-            }
-        }
-    }
+//    private void appendLogTextAndScroll(String text)
+//    {
+//        if(mTxtOrbotLog != null){
+//        	mTxtOrbotLog.append(text + "\n");
+//            final Layout layout = mTxtOrbotLog.getLayout();
+//            if(layout != null){
+//                int scrollDelta = layout.getLineBottom(mTxtOrbotLog.getLineCount() - 1) 
+//                    - mTxtOrbotLog.getScrollY() - mTxtOrbotLog.getHeight();
+//                if(scrollDelta > 0)
+//                	mTxtOrbotLog.scrollBy(0, scrollDelta);
+//            }
+//        }
+//    }
     
    /*
     * Create the UI Options Menu (non-Javadoc)
@@ -245,10 +218,13 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
                                 }
                                 else
                                 {
-                                    if (mItemOnOff != null)
-                                            mItemOnOff.setTitle(R.string.menu_start);
-                                        stopTor();
-                                        
+                                	if (mItemOnOff != null)
+                                		mItemOnOff.setTitle(R.string.menu_start);
+                                	
+                                	stopTor();
+
+                                	finish();
+
                                 }
                                 
                         }
@@ -340,8 +316,6 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
 		            
 		    		openBrowser(URL_TOR_CHECK);
 
-					
-		        	
 		            break;
 
 		        case DialogInterface.BUTTON_NEGATIVE:
@@ -714,85 +688,33 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
                     //if the serivce is bound, query it for the curren status value (int)
                     if (mService != null)
                             torStatus = mService.getStatus();
+
+                    if (autoStartFromIntent)
+                    {
+                    	if(torStatus == TorServiceConstants.STATUS_ON && torPrevStatus != torStatus){
+                    		Toast.makeText(getApplicationContext(), "Loading End!!", Toast.LENGTH_SHORT).show();
+                    		startActivity(new Intent(getApplicationContext(), BrowserActivity.class));
+                    		//finish();
+                    	}
+                    }
                     
                     //now update the layout_main UI based on the status
-                    if (imgStatus != null)
-                    {
+//                    if (imgStatus != null)
+//                    {
                             
                             if (torStatus == TorServiceConstants.STATUS_ON)
                             {
-                                    imgStatus.setImageResource(R.drawable.toron);
-
-                           //         hideProgressDialog();
-                                    
-                                    String lblMsg = getString(R.string.status_activated);
-                                     
-                                    lblStatus.setText(lblMsg);
-                                    
-                                    if (torServiceMsg != null && torServiceMsg.length() > 0)
-                                    {
-                                    //        showAlert("Update", torServiceMsg,xte
-                                    	appendLogTextAndScroll(torServiceMsg);
-                                    }
-                                    
-                                    boolean showFirstTime = mPrefs.getBoolean("connect_first_time",true);
-                                    
-                                    if (showFirstTime)
-                                    {
-                                    
-                                            Editor pEdit = mPrefs.edit();
-                                            
-                                            pEdit.putBoolean("connect_first_time",false);
-                                            
-                                            pEdit.commit();
-                                            
-                                            //showAlert(getString(R.string.status_activated),getString(R.string.connect_first_time),true);
-                                            
-                                    }
-                                    
-                                    if (mItemOnOff != null)
-                                            mItemOnOff.setTitle(R.string.menu_stop);
-                                    
-                                    
-                                    if (autoStartFromIntent)
-                                    {
-                                    	if(torPrevStatus != torStatus)
-                                    		Toast.makeText(getApplicationContext(), "Loading End!!", Toast.LENGTH_SHORT).show();
-//                                    	setResult(RESULT_OK);
-//                                    	finish();
-                                    }
-
+//                                    imgStatus.setImageResource(R.drawable.toron);
                             }
                             else if (torStatus == TorServiceConstants.STATUS_CONNECTING)
                             {
-                                    
-                                    imgStatus.setImageResource(R.drawable.torstarting);
-                                    
-                                    if (lblStatus != null && torServiceMsg != null)
-                                    	if (torServiceMsg.indexOf('%')!=-1)
-                                    		lblStatus.setText(torServiceMsg);
-                                    
-                                    appendLogTextAndScroll(torServiceMsg);
-                                    
-                                    if (mItemOnOff != null)
-                                            mItemOnOff.setTitle(R.string.menu_stop);
-                                            
+//                                    imgStatus.setImageResource(R.drawable.torstarting);
                             }
                             else
                             {
-
-
-                                  //  hideProgressDialog();
-                                    
-                                    imgStatus.setImageResource(R.drawable.toroff);
-                                    lblStatus.setText(getString(R.string.status_disabled) + "\n" + getString(R.string.press_to_start));
-                                    
-                                    if (mItemOnOff != null)
-                                            mItemOnOff.setTitle(R.string.menu_start);
-                                    
+//                                    imgStatus.setImageResource(R.drawable.toroff);
                             }
-                    }
-                            
+//                    }
             }
             catch (RemoteException e)
             {
@@ -808,7 +730,7 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
     {
             
 
-			mTxtOrbotLog.setText("");
+//			mTxtOrbotLog.setText("");
 		
             // this is a bit of a strange/old/borrowed code/design i used to change the service state
             // not sure it really makes sense when what we want to say is just "startTor"
@@ -816,8 +738,8 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
                 
             //here we update the UI which is a bit sloppy and mixed up code wise
             //might be best to just call updateStatus() instead of directly manipulating UI in this method - yep makes sense
-            imgStatus.setImageResource(R.drawable.torstarting);
-            lblStatus.setText(getString(R.string.status_starting_up));
+//            imgStatus.setImageResource(R.drawable.torstarting);
+//            lblStatus.setText(getString(R.string.status_starting_up));
             
             //we send a message here to the progressDialog i believe, but we can clarify that shortly
             Message msg = mHandler.obtainMessage(TorServiceConstants.ENABLE_TOR_MSG);
@@ -842,45 +764,6 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
     	
      
     }
-    
-        /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-        public boolean onLongClick(View view) {
-                
-        	if (!mDrawerOpen)
-        	{
-	            try
-	            {
-	                    
-	                if (mService != null && mService.getStatus() == TorServiceConstants.STATUS_OFF)
-	                {
-	                        
-	                       // createProgressDialog(getString(R.string.status_starting_up));
-	
-	                        startTor();
-	                }
-	                else
-	                {
-	                        
-	                        stopTor();
-	                        
-	                }
-	                
-	                return true;
-	                    
-	            }
-	            catch (Exception e)
-	            {
-	                    Log.d(TAG,"error onclick",e);
-	            }
-
-        	}
-        	
-            return false;
-                    
-        }
         
 
     /**
@@ -979,8 +862,8 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
             		long totalRead = data.getLong("readTotal");
             		long totalWrite = data.getLong("writeTotal");
             	
-        			downloadText.setText(formatCount(datacount.Download) + " / " + formatTotal(totalRead));
-            		uploadText.setText(formatCount(datacount.Upload) + " / " + formatTotal(totalWrite));
+//        			downloadText.setText(formatCount(datacount.Download) + " / " + formatTotal(totalRead));
+//            		uploadText.setText(formatCount(datacount.Upload) + " / " + formatTotal(totalWrite));
             
             		if (torStatus != TorServiceConstants.STATUS_ON)
             		{
@@ -1144,7 +1027,6 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
    	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
 		unbindService();
 	}
 
@@ -1200,12 +1082,12 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
 			Toast.makeText(this, R.string.newnym, Toast.LENGTH_SHORT).show();
 			
 		//	Rotate3dAnimation rotation = new Rotate3dAnimation(ROTATE_FROM, ROTATE_TO*direction, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-			 Rotate3dAnimation rotation = new Rotate3dAnimation(ROTATE_FROM, ROTATE_TO*direction, imgStatus.getWidth()/2f,imgStatus.getWidth()/2f,20f,false);
-			 rotation.setFillAfter(true);
-			  rotation.setInterpolator(new AccelerateInterpolator());
-			  rotation.setDuration((long) 2*1000);
-			  rotation.setRepeatCount(0);
-			  imgStatus.startAnimation(rotation);
+//			 Rotate3dAnimation rotation = new Rotate3dAnimation(ROTATE_FROM, ROTATE_TO*direction, imgStatus.getWidth()/2f,imgStatus.getWidth()/2f,20f,false);
+//			 rotation.setFillAfter(true);
+//			  rotation.setInterpolator(new AccelerateInterpolator());
+//			  rotation.setDuration((long) 2*1000);
+//			  rotation.setRepeatCount(0);
+//			  imgStatus.startAnimation(rotation);
 			  
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
