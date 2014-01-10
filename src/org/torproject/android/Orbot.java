@@ -267,7 +267,7 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
                 }
                 else if (item.getItemId() == R.id.menu_verify)
                 {
-                        doTorCheck();
+                	    openBrowser(URL_TOR_CHECK);
                 }
                 else if (item.getItemId() == R.id.menu_exit)
                 {
@@ -328,36 +328,7 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
 		if (aDialog != null)
 			aDialog.dismiss();
 	}
-	
-	private void doTorCheck ()
-	{
 		
-		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-			
-		    public void onClick(DialogInterface dialog, int which) {
-		        switch (which){
-		        case DialogInterface.BUTTON_POSITIVE:
-		            
-		    		openBrowser(URL_TOR_CHECK);
-
-					
-		        	
-		            break;
-
-		        case DialogInterface.BUTTON_NEGATIVE:
-		        
-		        	//do nothing
-		            break;
-		        }
-		    }
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.tor_check).setPositiveButton(R.string.btn_okay, dialogClickListener)
-		    .setNegativeButton(R.string.btn_cancel, dialogClickListener).show();
-
-	}
-	
 	private void enableHiddenServicePort (int hsPort)
 	{
 		Editor pEdit = mPrefs.edit();
@@ -541,54 +512,9 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
 	 */
 	private void openBrowser(final String browserLaunchUrl)
 	{
-		boolean isOrwebInstalled = appInstalledOrNot("info.guardianproject.browser");
-		boolean isTransProxy =  mPrefs.getBoolean("pref_transparent", false);
-		
-		if (isOrwebInstalled)
-		{
-			startIntent("info.guardianproject.browser",Intent.ACTION_VIEW,Uri.parse(browserLaunchUrl));						
-		}
-		else if (isTransProxy)
-		{
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(browserLaunchUrl));
-			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}
-		else
-		{
-			AlertDialog aDialog = new AlertDialog.Builder(Orbot.this)
-              .setIcon(R.drawable.icon)
-		      .setTitle("Install apps?")
-		      .setMessage("It doesn't seem like you have Orweb installed. Want help with that, or should we just open the browser?")
-		      .setPositiveButton(android.R.string.ok, new OnClickListener ()
-		      {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-					//prompt to install Orweb
-					Intent intent = new Intent(Orbot.this,TipsAndTricks.class);
-					startActivity(intent);
-					
-				}
-		    	  
-		      })
-		      .setNegativeButton(android.R.string.no, new OnClickListener ()
-		      {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(browserLaunchUrl));
-					intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(intent);
-					
-				}
-		    	  
-		      })
-		      .show();
-			  
-		}
-		
+		Toast.makeText(getApplicationContext(),  "Start Browser", Toast.LENGTH_LONG).show();
+		Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(browserLaunchUrl));
+		startActivity(myIntent);
 	}
 	
 	private void startIntent (String pkg, String action, Uri data)
