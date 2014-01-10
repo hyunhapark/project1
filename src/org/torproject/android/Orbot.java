@@ -91,6 +91,8 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
         startService(new Intent(INTENT_TOR_SERVICE));
 		
     	doLayout();
+
+		autoStartFromIntent = true;
 	}
 	
 	private void doLayout ()
@@ -708,6 +710,7 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
     {
             try
             {
+            		int torPrevStatus = torStatus;
                     //if the serivce is bound, query it for the curren status value (int)
                     if (mService != null)
                             torStatus = mService.getStatus();
@@ -743,7 +746,7 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
                                             
                                             pEdit.commit();
                                             
-                                            showAlert(getString(R.string.status_activated),getString(R.string.connect_first_time),true);
+                                            //showAlert(getString(R.string.status_activated),getString(R.string.connect_first_time),true);
                                             
                                     }
                                     
@@ -753,8 +756,10 @@ public class Orbot extends SherlockActivity implements TorConstants, OnLongClick
                                     
                                     if (autoStartFromIntent)
                                     {
-                                    	setResult(RESULT_OK);
-                                    	finish();
+                                    	if(torPrevStatus != torStatus)
+                                    		Toast.makeText(getApplicationContext(), "Loading End!!", Toast.LENGTH_SHORT).show();
+//                                    	setResult(RESULT_OK);
+//                                    	finish();
                                     }
 
                             }
